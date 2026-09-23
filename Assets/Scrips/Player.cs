@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         {
             rigidbodyy.AddForce(Vector3.left * speed * Time.fixedDeltaTime, ForceMode.Force);
         }
+
         if (Keyboard.current.spaceKey.IsPressed()&& Canjump)
         {
             rigidbodyy.AddForce(Vector3.up * jump * Time.fixedDeltaTime, ForceMode.Force);
