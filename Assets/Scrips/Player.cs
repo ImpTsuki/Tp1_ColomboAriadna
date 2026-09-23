@@ -6,16 +6,19 @@ public class Player : MonoBehaviour
     public Rigidbody rigidbodyy;
     public float speed = 10f;
     bool Canjump = false;
-    public float jump = 10f;
+    public float jump = 100f;
+    public Camera Camarapersonaje;
+    public float Vrotación = 100f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-      
+        //se usa Camera.main ya que la cámara está asignada con este tipo y nombre
+        Camarapersonaje = Camera.main;
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Piso")
+        if(collision.gameObject.tag == "Piso")
         {
             Canjump = true;
 
@@ -24,7 +27,7 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.name == "Piso")
+        if (collision.gameObject.tag == "Piso")
         {
             Canjump = false;
         }
@@ -50,22 +53,32 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.wKey.IsPressed())
         {
-            rigidbodyy.AddForce(Vector3.forward * speed * Time.fixedDeltaTime, ForceMode.Force);
+            rigidbodyy.AddForce(transform.forward * speed * Time.fixedDeltaTime, ForceMode.Force);
         }
 
         if (Keyboard.current.sKey.IsPressed())
         {
-            rigidbodyy.AddForce(Vector3.back * speed * Time.fixedDeltaTime, ForceMode.Force);
+            rigidbodyy.AddForce(-transform.forward   * speed * Time.fixedDeltaTime, ForceMode.Force);
         }
 
         if (Keyboard.current.dKey.IsPressed())
         {
-            rigidbodyy.AddForce(Vector3.right * speed * Time.fixedDeltaTime, ForceMode.Force);
+            rigidbodyy.AddForce(transform.right * speed * Time.fixedDeltaTime, ForceMode.Force);
         }
 
         if (Keyboard.current.aKey.IsPressed())
         {
-            rigidbodyy.AddForce(Vector3.left * speed * Time.fixedDeltaTime, ForceMode.Force);
+            rigidbodyy.AddForce(-transform.right * speed * Time.fixedDeltaTime, ForceMode.Force);
+
+        }
+        if (Mouse.current.delta.ReadValue().x > 0)
+        {
+            transform.Rotate(Vector3.up * Vrotación * Time.fixedDeltaTime);
+        }
+
+        if (Mouse.current.delta.ReadValue().x < 0)
+        {
+            transform.Rotate(Vector3.down * Vrotación * Time.fixedDeltaTime);
         }
 
         if (Keyboard.current.spaceKey.IsPressed()&& Canjump)
