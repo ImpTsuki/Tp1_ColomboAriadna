@@ -9,12 +9,15 @@ public class Player : MonoBehaviour
     public float jump = 100f;
     public Camera Camarapersonaje;
     public float Vrotación = 100f;
+    private Vector3 puntoRespawn = new Vector3(0, 10, 0);
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //se usa Camera.main ya que la cámara está asignada con este tipo y nombre
         Camarapersonaje = Camera.main;
+        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -32,10 +35,20 @@ public class Player : MonoBehaviour
             Canjump = false;
         }
     }
+
+    public void ActivarCheckpoint(Vector3 posicion)
+{
+    puntoRespawn = posicion;
+}
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Adios");
+        if (transform.position.y < -45)
+    {
+            transform.position = puntoRespawn;
+            rigidbodyy.linearVelocity = Vector3.zero;
+            rigidbodyy.angularVelocity = Vector3.zero;
+    }
 
         // Vector3.forward es el automático de decir "movete para delante". Lo multiplicamos por la velocidad y por Time.deltaTime
         // Time.deltaTime: Hace que siempre se mueva a la misma velocidad en todas la compus por más que tengas más o menos FPS
